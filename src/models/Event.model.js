@@ -1,8 +1,8 @@
-const { Schema, model, Collection } = require("mongoose");
+const { Schema, model, Collection, SchemaTypes } = require("mongoose");
 
 const EventSchema = new Schema(
   {
-    createdBy: { required: true },
+    createdBy: { type: SchemaTypes.ObjectId, ref: "user", required: true },
     title: { type: String, required: true },
     desc: { type: String, required: true },
     date: { type: Date, required: true },
