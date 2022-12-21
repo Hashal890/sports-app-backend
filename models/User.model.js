@@ -9,6 +9,7 @@ const UserSchema = new Schema(
     createdEvent: { type: Array, required: false },
     acceptedEvents: { type: Array, required: false },
     rejectedEvents: { type: Array, required: false },
+    token: { type: String, required: false },
   },
   {
     timestamps: true,

@@ -24,14 +24,14 @@ userRouter.get("/:id", async (req, res) => {
 
 userRouter.post("/", async (req, res) => {
   try {
-    const newUser = await UserModel.create(req.body);
     const token = await jwt.sign(
-      { fName: newUser.fName, username: newUser.username },
+      { fName: req.body.fName, username: req.body.username },
       PRIVATE_KEY_JWT
     );
+    const newUser = await UserModel.create({ ...req.body, token });
     return res
       .status(200)
-      .send({ message: "Account created successfully.", user: newUser, token });
+      .send({ message: "Account created successfully.", user: newUser });
   } catch (err) {
     return res.status(401).send({ message: err.message });
   }
