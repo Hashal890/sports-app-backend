@@ -8,14 +8,17 @@ eventsRouter.post("/", async (req, res) => {
   try {
     const newEvent = await EventModel.create(req.body);
     const user = await UserModel.findById(newEvent.createdBy);
+    if (user === null) {
+      return res.status(401).send({ message: "User not found." });
+    }
     await UserModel.findByIdAndUpdate(newEvent.createdBy, {
       createdEvent: [...user.createdEvent, newEvent],
     });
-    res
+    return res
       .status(200)
       .send({ message: "Event created successfully.", event: newEvent });
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    return res.status(401).send({ message: err.message });
   }
 });
 
@@ -23,11 +26,11 @@ eventsRouter.patch("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const updatedEvent = await EventModel.findByIdAndUpdate(id, req.body);
-    res
+    return res
       .status(200)
       .send({ message: "Event updated successfully.", event: updatedEvent });
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    return res.status(401).send({ message: err.message });
   }
 });
 

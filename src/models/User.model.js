@@ -7,7 +7,8 @@ const UserSchema = new Schema(
     username: { type: String, required: true },
     password: { type: String, required: true },
     createdEvent: { type: Array, required: false },
-    events: { type: Array, required: false },
+    acceptedEvents: { type: Array, required: false },
+    rejectedEvents: { type: Array, required: false },
   },
   {
     timestamps: true,

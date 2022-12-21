@@ -12,10 +12,13 @@ userRouter.get("/:id", async (req, res) => {
   //   console.log(req.body, req.params, req.query);
   try {
     const user = await UserModel.findById(id);
-    res.status(200).send({ message: "User found.", user });
+    if (user === null) {
+      return res.status(401).send({ message: "User not found." });
+    }
+    return res.status(200).send({ message: "User found.", user });
     // res.status(200).send({ message: "User found." });
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    return res.status(401).send({ message: err.message });
   }
 });
 
@@ -26,11 +29,11 @@ userRouter.post("/", async (req, res) => {
       { fName: newUser.fName, username: newUser.username },
       PRIVATE_KEY_JWT
     );
-    res
+    return res
       .status(200)
       .send({ message: "Account created successfully.", user: newUser, token });
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    return res.status(401).send({ message: err.message });
   }
 });
 
@@ -38,11 +41,23 @@ userRouter.patch("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const updatedUser = await EventModel.findByIdAndUpdate(id, req.body);
-    res
+    return res
       .status(200)
-      .send({ message: "User updated successfully.", event: updatedUser });
+      .send({ message: "User updated successfully.", user: updatedUser });
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    return res.status(401).send({ message: err.message });
+  }
+});
+
+userRouter.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await UserModel.findByIdAndDelete(id);
+    return res
+      .status(200)
+      .send({ message: "User deleted successfully.", user });
+  } catch (err) {
+    return res.status(401).send({ message: err.message });
   }
 });
 
