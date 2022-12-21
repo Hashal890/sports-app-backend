@@ -7,6 +7,19 @@ const userRouter = new Router();
 
 const PRIVATE_KEY_JWT = process.env.PRIVATE_KEY_JWT;
 
+userRouter.get("/", async (req, res) => {
+  try {
+    const user = await UserModel.findOne(req.body);
+    if (user === null) {
+      return res.status(401).send({ message: "User not found." });
+    }
+    return res.status(200).send({ message: "User found.", user });
+    // res.status(200).send({ message: "User found." });
+  } catch (err) {
+    return res.status(401).send({ message: err.message });
+  }
+});
+
 userRouter.get("/:id", async (req, res) => {
   const { id } = req.params;
   //   console.log(req.body, req.params, req.query);
