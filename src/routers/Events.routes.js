@@ -19,8 +19,16 @@ eventsRouter.post("/", async (req, res) => {
   }
 });
 
-eventsRouter.patch("/", async(req, res) => {
-    
-})
+eventsRouter.patch("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updatedEvent = await EventModel.findByIdAndUpdate(id, req.body);
+    res
+      .status(200)
+      .send({ message: "Event updated successfully.", event: updatedEvent });
+  } catch (err) {
+    res.status(401).send({ message: err.message });
+  }
+});
 
 module.exports = eventsRouter;

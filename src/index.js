@@ -1,5 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 require(`dotenv`).config({ debug: true });
 const mongooseConnect = require("../config/db.config");
 const eventsRouter = require("./routers/Events.routes");
