@@ -7,7 +7,7 @@ const userRouter = new Router();
 
 const PRIVATE_KEY_JWT = process.env.PRIVATE_KEY_JWT;
 
-userRouter.post("/get", async (req, res) => {
+userRouter.post("/getuser", async (req, res) => {
   try {
     const user = await UserModel.findOne(req.body);
     if (user === null) {
