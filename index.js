@@ -1,6 +1,6 @@
 const express = require("express");
 require(`dotenv`).config({ debug: true });
-const mongooseConnect = require("../config/db.config");
+const mongooseConnect = require("./config/db.config");
 const eventsRouter = require("./routers/Events.routes");
 const userRouter = require("./routers/User.routes");
 
