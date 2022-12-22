@@ -4,6 +4,15 @@ const UserModel = require("../models/User.model");
 
 const eventsRouter = new Router();
 
+eventsRouter.get("/", async (req, res) => {
+  try {
+    const event = await EventModel.find({});
+    res.status(200).send({ message: "All the events are given.", event });
+  } catch (err) {
+    res.status(401).send({ message: err.message });
+  }
+});
+
 eventsRouter.post("/", async (req, res) => {
   try {
     const newEvent = await EventModel.create(req.body);
