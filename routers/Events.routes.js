@@ -47,6 +47,19 @@ eventsRouter.get("/", async (req, res) => {
   }
 });
 
+eventsRouter.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const event = await EventModel.findById(id);
+    if (!event) {
+      res.status(401).send({ message: "Event not found." });
+    }
+    res.status(200).send({ message: "Event found", event });
+  } catch (err) {
+    res.status(401).send({ message: err.message });
+  }
+});
+
 eventsRouter.post("/", async (req, res) => {
   try {
     const newEvent = await EventModel.create(req.body);
