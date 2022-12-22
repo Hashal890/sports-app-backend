@@ -5,11 +5,45 @@ const UserModel = require("../models/User.model");
 const eventsRouter = new Router();
 
 eventsRouter.get("/", async (req, res) => {
-  try {
-    const event = await EventModel.find({});
-    res.status(200).send({ message: "All the events are given.", event });
-  } catch (err) {
-    res.status(401).send({ message: err.message });
+  const { page = 1, limit = 5 } = req.query;
+  if (!req.query.q && !req.query.filter) {
+    try {
+      const event = await EventModel.paginate({}, { page, limit });
+      res.status(200).send({ message: "All the events are given.", event });
+    } catch (err) {
+      res.status(401).send({ message: err.message });
+    }
+  } else if (req.query.q && !req.query.filter) {
+    // console.log(req.query.q);
+    try {
+      const event = await EventModel.paginate(
+        { $text: { $search: req.query.q } },
+        { page, limit }
+      );
+      res.status(200).send({ message: "All the events are given.", event });
+    } catch (err) {
+      res.status(401).send({ message: err.message });
+    }
+  } else if (!req.query.q && req.query.filter) {
+    try {
+      const event = await EventModel.paginate(
+        { limit: { $lt: req.query.filter } },
+        { page, limit }
+      );
+      res.status(200).send({ message: "All the events are given.", event });
+    } catch (err) {
+      res.status(401).send({ message: err.message });
+    }
+  } else {
+    try {
+      const event = await EventModel.paginate(
+        { title: req.query.q, limit: { $lt: req.query.filter } },
+        { page, limit }
+      );
+      res.status(200).send({ message: "All the events are given.", event });
+    } catch (err) {
+      res.status(401).send({ message: err.message });
+    }
   }
 });
 

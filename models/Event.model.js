@@ -1,4 +1,5 @@
 const { Schema, model, Collection, SchemaTypes } = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const EventSchema = new Schema(
   {
@@ -13,6 +14,8 @@ const EventSchema = new Schema(
     timestamps: true,
   }
 );
+
+EventSchema.plugin(mongoosePaginate);
 
 const EventModel = Collection.events || model("event", EventSchema);
 
