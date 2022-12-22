@@ -74,4 +74,18 @@ userRouter.delete("/:id", async (req, res) => {
   }
 });
 
+userRouter.post("/token", async (req, res) => {
+  const { token } = req.body;
+  try {
+    const { fName, username } = await jwt.verify(token, PRIVATE_KEY_JWT);
+    const user = await UserModel.findOne({ fName, username });
+    if (!user) {
+      return res.status(401).send({ message: "User not found." });
+    }
+    return res.status(200).send({ message: "User found", user });
+  } catch (err) {
+    return res.status(401).send({ message: err.message });
+  }
+});
+
 module.exports = userRouter;
